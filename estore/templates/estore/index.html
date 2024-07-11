@@ -1,0 +1,82 @@
+{% extends 'estore/basic.html' %}
+{% block title %}HomePage{% endblock %}
+
+{% block css %}
+<style>
+  #critical {
+    justify-content: center;
+  }
+
+  .card-img-top {
+    width: 282px;
+    height: 278px;
+  }
+
+  body .carousel-control-prev-icon,
+  body .carousel-control-next-icon {
+    background-color: rgba(5, 5, 5, 0.795);
+  }
+
+  .carousel-indicators .active {
+    background-color: rgba(5, 5, 5, 0.795);
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<section>
+  {% for len,product, range, no_of_slides in allProducts %}
+  <h3 class="mt-3" style="margin-left: 200px;">{{ product.0.category }}</h1>
+    <div id="carouselExampleIndicators{{ forloop.counter }}" class="carousel slide mb-5">
+      {%if len > 4 %}
+      <div class="carousel-indicators">
+        <div data-bs-target="#carouselExampleIndicators{{ forloop.counter }}" data-bs-slide-to="0" class="active"></div>
+        {% for i in range %}
+        <div data-bs-target="#carouselExampleIndicators{{ forloop.parentloop.counter }}" data-bs-slide-to="{{ i }}">
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Slideshow starts here -->
+      <div class="carousel-inner d-flex">
+        <!-- Slide-1 -->
+        <div class="carousel-item active">
+          <div class="d-flex" id="critical">
+            {% for prod in product %}
+            <div class="card" style="width: 18rem;">
+              <img src="/media/{{ prod.image }}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{ prod.product_name }}</h5>
+                <p class="card-text">{{ prod.desc }}</p>
+                <a href="#" class="btn btn-primary">Add to Cart</a>
+              </div>
+            </div>
+            {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last %}
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="d-flex" id="critical">
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      {%if len > 4 %}
+      <!-- left and right controls for the slide -->
+      <button class="carousel-control-prev" type="button"
+        data-bs-target="#carouselExampleIndicators{{ forloop.counter }}" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visibility-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button"
+        data-bs-target="#carouselExampleIndicators{{ forloop.counter }}" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="false"></span>
+        <span>Next</span>
+      </button>
+      {%endif%}
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}
